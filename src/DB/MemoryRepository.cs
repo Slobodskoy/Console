@@ -17,9 +17,9 @@ namespace Notes.DB
             return id;
         }
 
-        public void DeleteNode(int id)
+        public bool DeleteNode(int id)
         {
-            notesDict.Remove(id);
+            return notesDict.Remove(id);
         }
 
         public Note GetNoteById(int id)

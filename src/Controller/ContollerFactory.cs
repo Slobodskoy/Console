@@ -9,7 +9,7 @@ namespace Notes.Controller
     {
         private Dictionary<int, IController> _controllerList;
 
-        public ControllerFactory(MemoryRepository repository)
+        public ControllerFactory(IRepository repository)
         {
             _controllerList = new Dictionary<int, IController>();
             _controllerList.Add(0, new StartController(this));

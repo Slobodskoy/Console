@@ -10,6 +10,6 @@ namespace Notes.DB
         List<Note> GetNotes();
         Note GetNoteById(int id);
         int AddNote(Note note);
-        void DeleteNode(int id);
+        bool DeleteNode(int id);
     }
 }

@@ -31,12 +31,8 @@ namespace Notes.Controller
 
         public void Run(int id)
         {
-            var note = repository.GetNoteById(id);
-            if (note != null)
-            {
-                repository.DeleteNode(id);
-            }            
-            var view = new DeleteNotePageView(page, new Note { Id = note?.Id ?? 0 }, this);
+            var result = repository.DeleteNode(id);
+            var view = new DeleteNotePageView(page, new Note { Id = result ? id : 0 }, this);
             view.Render();
         }
 

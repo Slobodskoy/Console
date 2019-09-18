@@ -30,13 +30,12 @@ namespace Notes.Controller
             view.Render();
         }
 
-        internal void AddNote(Note model)
+        public void AddNote(Note model)
         {
-            var id = repository.AddNote(model);
-            model.Id = id;
+            repository.AddNote(model);
         }
 
-        internal void RunCommand(string command)
+        public void RunCommand(string command)
         {
             int commandId;
             int.TryParse(command, out commandId);
