@@ -19,8 +19,8 @@ namespace NotesTests
         {
             var repository = new MemoryRepository();
             var factory = new ControllerFactory(repository);
-            var result = factory.GetController(0);
-            Assert.Equal(typeof(StartController), result.GetType());
+            var result = factory.GetController(id);
+            Assert.Equal(type, result.GetType());
         }
     }
 }

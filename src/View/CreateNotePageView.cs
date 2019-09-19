@@ -7,11 +7,12 @@ using System.Text;
 
 namespace Notes.View
 {
-    public class CreateNotePageView : PageView<Page<Note>, Note>
+    public class CreateNotePageView : PageView<Note>, IView<Note>
     {
-        private readonly CreateNoteController controller;
+        private readonly ICreateNoteController controller;
 
-        public CreateNotePageView(Page<Note> page, Note model, CreateNoteController controller) : base(page, model)
+        public CreateNotePageView() : base(new PageInfo(), null) { }
+        public CreateNotePageView(PageInfo pageInfo, Note model, ICreateNoteController controller) : base(pageInfo, model)
         {
             this.controller = controller;
         }
@@ -20,8 +21,8 @@ namespace Notes.View
         {
             base.Render();
             Console.WriteLine("Input note title:");
-            model.Title = Console.ReadLine();
-            controller.AddNote(model);
+            Model.Title = Console.ReadLine();
+            controller.AddNote(Model);
             Console.WriteLine("Add next note [3], go to start - [0], help - [5]");
             var command = Console.ReadLine();
             controller.RunCommand(command);

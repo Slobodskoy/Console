@@ -3,20 +3,21 @@ using Notes.Infrastructure;
 
 namespace Notes.View
 {
-    public class PageView<T, V> : MasterView<T>
-        where T: Page<V>
+    public class PageView<V> : MasterView
     {
-        protected V model;
-
-        public PageView(T info, V model) : base(info)
+        public PageView() { }
+        public PageView(PageInfo info, V model) : base(info)
         {
-            this.model = model;
+            this.Info = info;
+            this.Model = model;
         }
-        
+
+        public PageInfo Info { get; set; }
+        public V Model { get; set; }
         public override void Render()
         {
             base.Render();
-            ConsoleExt.H(_info.PageName);
+            ConsoleExt.H(Info.PageName);
             ConsoleExt.Br();
         }
     }

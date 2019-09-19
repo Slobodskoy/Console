@@ -10,9 +10,9 @@ namespace Notes.Controller
     public class StartController : IController
     {
         private readonly IControllerFactory controllerFactory;
-        private readonly Page<CommandList> page;
+        private readonly IView<CommandList> pageView;
         private CommandList commandList = new CommandList();
-        public StartController(IControllerFactory controllerFactory)
+        public StartController(IControllerFactory controllerFactory, IView<CommandList> pageView)
         {
             commandList.Commands = new Dictionary<int, string> {
                 { 1, "View all records" },
@@ -22,19 +22,20 @@ namespace Notes.Controller
                 { 5, "Help" },
             };
             this.controllerFactory = controllerFactory;
-            page = new Page<CommandList>("Start page");
-            page.AppName = "My Notes";
+            this.pageView = pageView;
+            this.pageView.Info.AppName = "My Notes";
+            this.pageView.Info.PageName = "Start page";
         }
 
         public void Run()
         {  
-            var view = new StartPageView(page, commandList, this);
-            view.Render();
+            pageView.Model = commandList;
+            pageView.Render();
         }
 
         public void RunCommand(string command)
         {
-            int commandId = 0;
+            int commandId;
             int.TryParse(command, out commandId);
             if (commandList.Commands.ContainsKey(commandId))
             {

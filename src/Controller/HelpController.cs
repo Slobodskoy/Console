@@ -10,23 +10,24 @@ namespace Notes.Controller
     public class HelpController : IController
     {
         private readonly IControllerFactory controllerFactory;
-        private readonly Page<Help> page;
+        private readonly IView<Help> pageView;
 
-        public HelpController(IControllerFactory controllerFactory)
+        public HelpController(IControllerFactory controllerFactory, IView<Help> pageView)
         {
             this.controllerFactory = controllerFactory;
-            page = new Page<Help>("Help");
-            page.AppName = "My Notes";
+            this.pageView = pageView;
+            this.pageView.Info.AppName = "My Notes";
+            this.pageView.Info.PageName = "Help";
         }
 
         public void Run()
         {
             var help = new Help { HelpText = "This is help text"};
-            var view = new HelpView(page, help, this);
-            view.Render();
+            pageView.Model = help;
+            pageView.Render();
         }
 
-        internal void RunCommand(string command)
+        public void RunCommand(string command)
         {
             int commandId;
             int.TryParse(command, out commandId);

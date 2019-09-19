@@ -13,30 +13,30 @@ namespace Notes.Controller
     {
         private readonly IControllerFactory controllerFactory;
         private readonly IRepository repository;
-        private readonly Page<Note> page;
+        private readonly IView<Note> pageView;
 
-        public DeleteNoteController(IControllerFactory controllerFactory, IRepository repository)
+        public DeleteNoteController(IControllerFactory controllerFactory, IRepository repository, IView<Note> pageView)
         {
             this.controllerFactory = controllerFactory;
             this.repository = repository;
-            page = new Page<Note>("Delete note by id");
-            page.AppName = "My Notes";
+            this.pageView = pageView;
+            this.pageView.Info.AppName = "My Notes";
+            this.pageView.Info.PageName = "Delete note by id";
         }
 
         public void Run()
         {
-            var view = new DeleteNotePageView(page, null, this);
-            view.Render();
+            pageView.Render();
         }
 
         public void Run(int id)
         {
             var result = repository.DeleteNode(id);
-            var view = new DeleteNotePageView(page, new Note { Id = result ? id : 0 }, this);
-            view.Render();
+            pageView.Model = new Note { Id = result ? id : 0 };
+            pageView.Render();
         }
 
-        internal void RunCommand(string command)
+        public void RunCommand(string command)
         {
             int commandId;
             int.TryParse(command, out commandId);

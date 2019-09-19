@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Notes.Controller
 {
-    public interface IController
+    public interface IViewNoteController : IController
     {
-        void Run();
-        void RunCommand(string command);
+        void Run(int id);
     }
 }

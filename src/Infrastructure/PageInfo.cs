@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Notes.Infrastructure
 {
-    public class Page<T> : Base
+    public class PageInfo : AppBaseInfo
     {
-        public Page(string pageName)
+        public PageInfo() { }
+        public PageInfo(string pageName)
         {
             PageName = pageName;
         }
-        public string PageName { get; private set; }
-        public T Content { get; set; }
+        public string PageName { get; set; }
     }
 }

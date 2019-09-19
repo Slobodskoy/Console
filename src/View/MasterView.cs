@@ -7,11 +7,12 @@ using System.Text;
 
 namespace Notes.View
 {
-    public class MasterView<T>
-        where T: Base
+    public class MasterView        
     {
-        protected T _info;
-        public MasterView(T info)
+        protected AppBaseInfo _info;
+
+        public MasterView() { }
+        public MasterView(AppBaseInfo info)
         {
             _info = info;
         }

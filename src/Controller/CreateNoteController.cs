@@ -9,25 +9,26 @@ using System.Text;
 
 namespace Notes.Controller
 {
-    public class CreateNoteController : IController
+    public class CreateNoteController : ICreateNoteController
     {
         private readonly IControllerFactory controllerFactory;
         private readonly IRepository repository;
-        private readonly Page<Note> page;
+        private readonly IView<Note> pageView;
 
-        public CreateNoteController(IControllerFactory controllerFactory, IRepository repository)
+        public CreateNoteController(IControllerFactory controllerFactory, IRepository repository, IView<Note> pageView)
         {
             this.controllerFactory = controllerFactory;
             this.repository = repository;
-            page = new Page<Note>("Create new record");
-            page.AppName = "My Notes";
+            this.pageView = pageView;
+            this.pageView.Info.AppName = "My Notes";
+            this.pageView.Info.PageName = "Create new note";
         }
 
         public void Run()
         {
             var note = new Note();
-            var view = new CreateNotePageView(page, note, this);
-            view.Render();
+            pageView.Model = note;
+            pageView.Render();
         }
 
         public void AddNote(Note model)

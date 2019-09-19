@@ -6,11 +6,12 @@ using System.Collections.Generic;
 
 namespace Notes.View
 {
-    public class ViewAllNotesPageView : PageView<Page<List<Note>>, List<Note>>
+    public class ViewAllNotesPageView : PageView<List<Note>>, IView<List<Note>>
     {
-        private readonly ViewAllController controller;
+        private readonly IController controller;
 
-        public ViewAllNotesPageView(Page<List<Note>> info, List<Note> model, ViewAllController controller) : base(info, model)
+        public ViewAllNotesPageView() : base(new PageInfo(), null) { }
+        public ViewAllNotesPageView(PageInfo pageInfo, List<Note> model, IController controller) : base(pageInfo, model)
         {
             this.controller = controller;
         }
@@ -20,7 +21,7 @@ namespace Notes.View
             base.Render();
             Console.WriteLine($"Id\tTitle");
             Console.WriteLine($"==\t=====");
-            foreach (var item in model)
+            foreach (var item in Model)
             {
                 Console.WriteLine($"{item.Id}\t{item.Title}");
             }

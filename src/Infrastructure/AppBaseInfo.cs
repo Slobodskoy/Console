@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Notes.Infrastructure
 {
-    public class Base
+    public class AppBaseInfo
     {
         public string AppName { get; set; }
     }

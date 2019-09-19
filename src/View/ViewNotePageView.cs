@@ -5,11 +5,12 @@ using System;
 
 namespace Notes.View
 {
-    public class ViewNotePageView : PageView<Page<Note>, Note>
+    public class ViewNotePageView : PageView<Note>, IView<Note>
     {
-        private readonly ViewNoteController controller;
+        private readonly IViewNoteController controller;
 
-        public ViewNotePageView(Page<Note> page, Note model, ViewNoteController controller) : base(page, model)
+        public ViewNotePageView() : base(new PageInfo(), null) { }
+        public ViewNotePageView(PageInfo pageInfo, Note model, IViewNoteController controller) : base(pageInfo, model)
         {
             this.controller = controller;
         }
@@ -17,7 +18,7 @@ namespace Notes.View
         public override void Render()
         {
             base.Render();
-            if (model == null)
+            if (Model == null)
             {
                 Console.WriteLine("Input note Id:");
                 int id;
@@ -28,7 +29,7 @@ namespace Notes.View
                     return;
                 }
             }
-            else if (model.Id == 0)
+            else if (Model.Id == 0)
             {
                 Console.WriteLine("Not found");
             }
@@ -36,7 +37,7 @@ namespace Notes.View
             {
                 Console.WriteLine($"Id\tTitle");
                 Console.WriteLine($"==\t=====");
-                Console.WriteLine($"{model.Id}\t{model.Title}");
+                Console.WriteLine($"{Model.Id}\t{Model.Title}");
             }
             Console.WriteLine("Input command: [0] - return to start, [5] - help");
             var command = Console.ReadLine();

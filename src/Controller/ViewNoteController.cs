@@ -9,34 +9,34 @@ using Notes.View;
 
 namespace Notes.Controller
 {
-    public class ViewNoteController : IController
+    public class ViewNoteController : IViewNoteController
     {
         private readonly IControllerFactory controllerFactory;
         private readonly IRepository repository;
-        private readonly Page<Note> page;
+        private readonly IView<Note> pageView;
 
-        public ViewNoteController(IControllerFactory controllerFactory, IRepository repository)
+        public ViewNoteController(IControllerFactory controllerFactory, IRepository repository, IView<Note> pageView)
         {
             this.controllerFactory = controllerFactory;
             this.repository = repository;
-            this.page = new Page<Note>("View note by id");
-            this.page.AppName = "My Notes";
+            this.pageView = pageView;
+            this.pageView.Info.AppName = "My Notes";
+            this.pageView.Info.PageName = "View note by id";
         }
 
         public void Run()
         {
-
-            var view = new ViewNotePageView(page, null, this);
-            view.Render();
+            pageView.Model = null;
+            pageView.Render();
         }
 
         public void Run(int id)
         {
-            var view = new ViewNotePageView(page, repository.GetNoteById(id) ?? new Note { Id = 0 }, this);
-            view.Render();
+            pageView.Model = repository.GetNoteById(id) ?? new Note { Id = 0 };
+            pageView.Render();
         }
 
-        internal void RunCommand(string command)
+        public void RunCommand(string command)
         {
             int commandId;
             int.TryParse(command, out commandId);

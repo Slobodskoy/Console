@@ -6,29 +6,30 @@ using System.Linq;
 
 namespace Notes.View
 {
-    public class StartPageView : PageView<Page<CommandList>, CommandList>
+    public class StartPageView : PageView<CommandList>, IView<CommandList>
     {
-        private readonly StartController controller;
+        public IController Controller;
 
-        public StartPageView(Page<CommandList> page, CommandList model, StartController controller) : base(page, model)
+        public StartPageView() : base(new PageInfo(), null) { }
+        public StartPageView(PageInfo pageInfo, CommandList model, IController controller) : base(pageInfo, model)
         {
-            this.controller = controller;
+            this.Controller = controller;
         }
 
         public override void Render()
         {
             base.Render();
             Console.WriteLine("Command list:");
-            if (model != null && model.Commands != null)
+            if (Model != null && Model.Commands != null)
             {
-                foreach (var (key, value) in model.Commands)
+                foreach (var (key, value) in Model.Commands)
                 {
                     Console.WriteLine($"[{key}]\t{value}");
                 }
             }
 
             var command = Console.ReadLine();
-            controller.RunCommand(command);
+            Controller.RunCommand(command);
         }
     }
 }

@@ -7,11 +7,12 @@ using Notes.Model;
 
 namespace Notes.View
 {
-    public class DeleteNotePageView : PageView<Page<Note>, Note>
+    public class DeleteNotePageView : PageView<Note>, IView<Note>
     {
-        private DeleteNoteController controller;
+        private IDeleteNoteController controller;
 
-        public DeleteNotePageView(Page<Note> page, Note model, DeleteNoteController controller) : base(page, model)
+        public DeleteNotePageView() : base(new PageInfo(), null)  { }
+        public DeleteNotePageView(PageInfo pageInfo, Note model, IDeleteNoteController controller) : base(pageInfo, model)
         {
             this.controller = controller;
         }
@@ -19,7 +20,7 @@ namespace Notes.View
         public override void Render()
         {
             base.Render();
-            if (model == null)
+            if (Model == null)
             {
                 Console.WriteLine("Input note Id:");
                 int id;
@@ -30,7 +31,7 @@ namespace Notes.View
                     return;
                 }
             }
-            else if (model.Id == 0)
+            else if (Model.Id == 0)
             {
                 Console.WriteLine("Not found");
             }
