@@ -10,9 +10,9 @@ namespace Notes.Controller
     public class StartController : IController
     {
         private readonly IControllerFactory controllerFactory;
-        private readonly IView<CommandList> pageView;
+        private readonly IView<CommandList, IController> pageView;
         private CommandList commandList = new CommandList();
-        public StartController(IControllerFactory controllerFactory, IView<CommandList> pageView)
+        public StartController(IControllerFactory controllerFactory, IView<CommandList, IController> pageView)
         {
             commandList.Commands = new Dictionary<int, string> {
                 { 1, "View all records" },
@@ -25,6 +25,7 @@ namespace Notes.Controller
             this.pageView = pageView;
             this.pageView.Info.AppName = "My Notes";
             this.pageView.Info.PageName = "Start page";
+            this.pageView.Controller = this;
         }
 
         public void Run()

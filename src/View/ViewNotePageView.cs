@@ -5,14 +5,14 @@ using System;
 
 namespace Notes.View
 {
-    public class ViewNotePageView : PageView<Note>, IView<Note>
+    public class ViewNotePageView : PageView<Note>, IView<Note, IViewNoteController>
     {
-        private readonly IViewNoteController controller;
+        public IViewNoteController Controller { get; set; }
 
         public ViewNotePageView() : base(new PageInfo(), null) { }
         public ViewNotePageView(PageInfo pageInfo, Note model, IViewNoteController controller) : base(pageInfo, model)
         {
-            this.controller = controller;
+            this.Controller = controller;
         }
 
         public override void Render()
@@ -25,7 +25,7 @@ namespace Notes.View
                 var idStr = Console.ReadLine();
                 if (int.TryParse(idStr, out id))
                 {
-                    controller.Run(id);
+                    Controller.Run(id);
                     return;
                 }
             }
@@ -41,7 +41,7 @@ namespace Notes.View
             }
             Console.WriteLine("Input command: [0] - return to start, [5] - help");
             var command = Console.ReadLine();
-            controller.RunCommand(command);
+            Controller.RunCommand(command);
         }
 
     }

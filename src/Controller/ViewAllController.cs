@@ -12,16 +12,17 @@ namespace Notes.Controller
     public class ViewAllController : IController
     {
         private readonly IRepository repository;
-        private readonly IView<List<Note>> pageView;
+        private readonly IView<List<Note>, IController> pageView;
         private readonly IControllerFactory controllerFactory;
 
-        public ViewAllController(IControllerFactory controllerFactory, IRepository repository, IView<List<Note>> pageView)
+        public ViewAllController(IControllerFactory controllerFactory, IRepository repository, IView<List<Note>, IController> pageView)
         {
             this.controllerFactory = controllerFactory;
             this.repository = repository;
             this.pageView = pageView;
             this.pageView.Info.AppName = "My Notes";
             this.pageView.Info.PageName = "View all notes";
+            this.pageView.Controller = this;
         }
         public void Run()
         {

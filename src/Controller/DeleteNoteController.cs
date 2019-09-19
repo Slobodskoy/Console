@@ -9,19 +9,20 @@ using Notes.View;
 
 namespace Notes.Controller
 {
-    public class DeleteNoteController : IController
+    public class DeleteNoteController : IDeleteNoteController
     {
         private readonly IControllerFactory controllerFactory;
         private readonly IRepository repository;
-        private readonly IView<Note> pageView;
+        private readonly IView<Note, IDeleteNoteController> pageView;
 
-        public DeleteNoteController(IControllerFactory controllerFactory, IRepository repository, IView<Note> pageView)
+        public DeleteNoteController(IControllerFactory controllerFactory, IRepository repository, IView<Note, IDeleteNoteController> pageView)
         {
             this.controllerFactory = controllerFactory;
             this.repository = repository;
             this.pageView = pageView;
             this.pageView.Info.AppName = "My Notes";
             this.pageView.Info.PageName = "Delete note by id";
+            this.pageView.Controller = this;
         }
 
         public void Run()

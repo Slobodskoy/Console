@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Notes.View
 {
-    public class StartPageView : PageView<CommandList>, IView<CommandList>
+    public class StartPageView : PageView<CommandList>, IView<CommandList, IController>
     {
-        public IController Controller;
+        public IController Controller { get; set; }
 
         public StartPageView() : base(new PageInfo(), null) { }
         public StartPageView(PageInfo pageInfo, CommandList model, IController controller) : base(pageInfo, model)

@@ -6,14 +6,14 @@ using System.Collections.Generic;
 
 namespace Notes.View
 {
-    public class ViewAllNotesPageView : PageView<List<Note>>, IView<List<Note>>
+    public class ViewAllNotesPageView : PageView<List<Note>>, IView<List<Note>, IController>
     {
-        private readonly IController controller;
+        public IController Controller { get; set; }
 
         public ViewAllNotesPageView() : base(new PageInfo(), null) { }
         public ViewAllNotesPageView(PageInfo pageInfo, List<Note> model, IController controller) : base(pageInfo, model)
         {
-            this.controller = controller;
+            this.Controller = controller;
         }
 
         public override void Render()
@@ -27,7 +27,7 @@ namespace Notes.View
             }
             Console.WriteLine("Input command: [0] - return to start, [5] - help");
             var command = Console.ReadLine();
-            controller.RunCommand(command);
+            Controller.RunCommand(command);
         }
     }
 }

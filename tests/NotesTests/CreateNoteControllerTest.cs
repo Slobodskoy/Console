@@ -18,7 +18,7 @@ namespace NotesTests
             mock.Setup(a => a.AddNote(It.IsAny<Note>()));
 
             var factory = new ControllerFactory(mock.Object);
-            var view = new Mock<IView<Note>>();
+            var view = new Mock<IView<Note, ICreateNoteController>>();
             view.Setup(v => v.Info).Returns(new PageInfo());
             view.Setup(v => v.Model).Returns(new Note());
             var controller = new CreateNoteController(factory, mock.Object, view.Object);
@@ -40,7 +40,7 @@ namespace NotesTests
             mock.Setup(a => a.GetController(It.Is<int>(i => i == command))).Returns(controllerMock.Object);
 
             var mockRep = new Mock<IRepository>();
-            var view = new Mock<IView<Note>>();
+            var view = new Mock<IView<Note, ICreateNoteController>>();
             view.Setup(v => v.Info).Returns(new PageInfo());
             view.Setup(v => v.Model).Returns(new Note());
 

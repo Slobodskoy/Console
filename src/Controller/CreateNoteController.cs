@@ -13,15 +13,16 @@ namespace Notes.Controller
     {
         private readonly IControllerFactory controllerFactory;
         private readonly IRepository repository;
-        private readonly IView<Note> pageView;
+        private readonly IView<Note, ICreateNoteController> pageView;
 
-        public CreateNoteController(IControllerFactory controllerFactory, IRepository repository, IView<Note> pageView)
+        public CreateNoteController(IControllerFactory controllerFactory, IRepository repository, IView<Note, ICreateNoteController> pageView)
         {
             this.controllerFactory = controllerFactory;
             this.repository = repository;
             this.pageView = pageView;
             this.pageView.Info.AppName = "My Notes";
             this.pageView.Info.PageName = "Create new note";
+            this.pageView.Controller = this;
         }
 
         public void Run()

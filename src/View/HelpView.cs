@@ -7,14 +7,14 @@ using System.Text;
 
 namespace Notes.View
 {
-    public class HelpView : PageView<Help>, IView<Help>
+    public class HelpView : PageView<Help>, IView<Help, IController>
     {
-        private readonly IController controller;
+        public IController Controller { get; set; }
 
         public HelpView() : base(new PageInfo(), null) { }
         public HelpView(PageInfo pageInfo, Help model, IController controller) : base(pageInfo, model)
         {
-            this.controller = controller;
+            this.Controller = controller;
         }
 
         public override void Render()
@@ -24,7 +24,7 @@ namespace Notes.View
             Console.WriteLine(Model.HelpText);
             Console.WriteLine("Input command: [0] - return to start");
             var command = Console.ReadLine();
-            controller.RunCommand(command);
+            Controller.RunCommand(command);
         }
     }
 }

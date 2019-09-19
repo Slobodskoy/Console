@@ -18,7 +18,7 @@ namespace NotesTests
             mock.Setup(a => a.DeleteNode(It.IsAny<int>()));
 
             var factory = new ControllerFactory(mock.Object);
-            var view = new Mock<IView<Note>>();
+            var view = new Mock<IView<Note, IDeleteNoteController>>();
             view.Setup(v => v.Info).Returns(new PageInfo());
             view.Setup(v => v.Model).Returns(new Note());
 
@@ -40,7 +40,7 @@ namespace NotesTests
             mock.Setup(a => a.GetController(It.Is<int>(i => i == command))).Returns(controllerMock.Object);
 
             var mockRep = new Mock<IRepository>();
-            var view = new Mock<IView<Note>>();
+            var view = new Mock<IView<Note, IDeleteNoteController>>();
             view.Setup(v => v.Info).Returns(new PageInfo());
             view.Setup(v => v.Model).Returns(new Note());
             var controller = new DeleteNoteController(mock.Object, mockRep.Object, view.Object);
