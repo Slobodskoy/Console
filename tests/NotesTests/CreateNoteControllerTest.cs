@@ -12,6 +12,20 @@ namespace NotesTests
     public class CreateNoteControllerTest
     {
         [Fact]
+        public void Run_ThenViewRender()
+        {
+            var mock = new Mock<IRepository>();
+            var factory = new ControllerFactory(mock.Object);
+            var view = new Mock<IView<Note, ICreateNoteController>>();
+            view.Setup(v => v.Info).Returns(new PageInfo());
+            view.Setup(v => v.Model).Returns(new Note());
+            view.Setup(v => v.Render());
+            var controller = new CreateNoteController(factory, mock.Object, view.Object);
+            controller.Run();
+            view.Verify(v => v.Render(), Times.Once());
+        }
+
+        [Fact]
         public void AddNote_WhenCall_ThenRepositoryRun()
         {
             var mock = new Mock<IRepository>();

@@ -5,41 +5,40 @@ using Notes.Infrastructure;
 using Notes.Model;
 using Notes.View;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace NotesTests
 {
-    public class DeleteNoteControllerTest
+    public class ViewAllControllerTest
     {
-
         [Fact]
         public void Run_ThenViewRender()
         {
             var mock = new Mock<IRepository>();
             var factory = new ControllerFactory(mock.Object);
-            var view = new Mock<IView<Note, IDeleteNoteController>>();
+            var view = new Mock<IView<List<Note>, IController>>();
             view.Setup(v => v.Info).Returns(new PageInfo());
-            view.Setup(v => v.Model).Returns(new Note());
+            view.Setup(v => v.Model).Returns(new List<Note> { new Note() });
             view.Setup(v => v.Render());
-            var controller = new DeleteNoteController(factory, mock.Object, view.Object);
+            var controller = new ViewAllController(factory, mock.Object, view.Object);
             controller.Run();
             view.Verify(v => v.Render(), Times.Once());
         }
 
         [Fact]
-        public void Run_WhenWithId_ThenRepositoryRun()
+        public void Run_ThenRepositoryGetNotesCall()
         {
             var mock = new Mock<IRepository>();
-            mock.Setup(a => a.DeleteNode(It.IsAny<int>()));
-
+            mock.Setup(r => r.GetNotes());
             var factory = new ControllerFactory(mock.Object);
-            var view = new Mock<IView<Note, IDeleteNoteController>>();
+            var view = new Mock<IView<List<Note>, IController>>();
             view.Setup(v => v.Info).Returns(new PageInfo());
-            view.Setup(v => v.Model).Returns(new Note());
-
-            var controller = new DeleteNoteController(factory, mock.Object, view.Object);
-            controller.Run(1);
-            mock.Verify(m => m.DeleteNode(It.IsAny<int>()), Times.Once());
+            view.Setup(v => v.Model).Returns(new List<Note> { new Note() });
+            view.Setup(v => v.Render());
+            var controller = new ViewAllController(factory, mock.Object, view.Object);
+            controller.Run();
+            mock.Verify(v => v.GetNotes(), Times.Once());
         }
 
         [Theory]
@@ -55,10 +54,11 @@ namespace NotesTests
             mock.Setup(a => a.GetController(It.Is<int>(i => i == command))).Returns(controllerMock.Object);
 
             var mockRep = new Mock<IRepository>();
-            var view = new Mock<IView<Note, IDeleteNoteController>>();
+            var view = new Mock<IView<Note, ICreateNoteController>>();
             view.Setup(v => v.Info).Returns(new PageInfo());
             view.Setup(v => v.Model).Returns(new Note());
-            var controller = new DeleteNoteController(mock.Object, mockRep.Object, view.Object);
+
+            var controller = new CreateNoteController(mock.Object, mockRep.Object, view.Object);
             controller.RunCommand($"{command}");
             mock.Verify(m => m.GetController(It.Is<int>(i => i == command)), Times.Once());
         }
