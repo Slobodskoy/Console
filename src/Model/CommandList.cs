@@ -6,6 +6,6 @@ namespace Notes.Model
 {
     public class CommandList
     {
-        public Dictionary<int, string> Commands { get; set; }
+        public Dictionary<ControllerTypes, string> Commands { get; set; }
     }
 }

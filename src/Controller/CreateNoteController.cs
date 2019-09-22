@@ -9,11 +9,15 @@ using System.Text;
 
 namespace Notes.Controller
 {
-    public class CreateNoteController : ICreateNoteController
+    public class CreateNoteController : BaseController, ICreateNoteController
     {
-        private readonly IControllerFactory controllerFactory;
         private readonly IRepository repository;
         private readonly IView<Note, ICreateNoteController> pageView;
+
+        public override IEnumerable<ControllerTypes> NextSteps
+        {
+            get => new ControllerTypes[] { ControllerTypes.StartController, ControllerTypes.CreateNoteController, ControllerTypes.HelpController };
+        }
 
         public CreateNoteController(IControllerFactory controllerFactory, IRepository repository, IView<Note, ICreateNoteController> pageView)
         {
@@ -25,7 +29,7 @@ namespace Notes.Controller
             this.pageView.Controller = this;
         }
 
-        public void Run()
+        public override void Run()
         {
             var note = new Note();
             pageView.Model = note;
@@ -35,17 +39,6 @@ namespace Notes.Controller
         public void AddNote(Note model)
         {
             repository.AddNote(model);
-        }
-
-        public void RunCommand(string command)
-        {
-            int commandId;
-            int.TryParse(command, out commandId);
-            if ((new[] { 0, 3, 5 }).Contains(commandId) )
-            {
-                var controller = controllerFactory.GetController(commandId);
-                controller.Run();
-            }
         }
     }
 }

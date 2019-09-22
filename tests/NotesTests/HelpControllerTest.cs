@@ -28,19 +28,19 @@ namespace NotesTests
 
 
         [Theory]
-        [InlineData(0)]
-        public void RunCommand_WhenCommand_ThenFactoryRun(int command)
+        [InlineData(ControllerTypes.StartController)]
+        public void RunCommand_WhenCommand_ThenFactoryRun(ControllerTypes command)
         {
             var controllerMock = new Mock<IController>();
             controllerMock.Setup(c => c.Run());
             var mock = new Mock<IControllerFactory>();           
-            mock.Setup(a => a.GetController(It.Is<int>(i => i == command))).Returns(controllerMock.Object);
+            mock.Setup(a => a.GetController(It.Is<ControllerTypes>(i => i == command))).Returns(controllerMock.Object);
             var view = new Mock<IView<Help, IController>>();
             view.Setup(v => v.Info).Returns(new PageInfo());
             view.Setup(v => v.Model).Returns(new Help());
             var controller = new HelpController(mock.Object, view.Object);
-            controller.RunCommand($"{command}");
-            mock.Verify(m => m.GetController(It.Is<int>(i => i == command)), Times.Once());
+            controller.GoNextStep(command);
+            mock.Verify(m => m.GetController(It.Is<ControllerTypes>(i => i == command)), Times.Once());
         }
     }
 }

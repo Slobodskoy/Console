@@ -9,17 +9,18 @@ namespace NotesTests
     public class ContollerFactoryTest
     {
         [Theory]
-        [InlineData(0, typeof(StartController))]
-        [InlineData(1, typeof(ViewAllController))]
-        [InlineData(2, typeof(ViewNoteController))]
-        [InlineData(3, typeof(CreateNoteController))]
-        [InlineData(4, typeof(DeleteNoteController))]
-        [InlineData(5, typeof(HelpController))]
-        public void GetController_WhenId_ReturnController(int id, Type type)
+        [InlineData(ControllerTypes.StartController, typeof(StartController))]
+        [InlineData(ControllerTypes.ViewAllController, typeof(ViewAllController))]
+        [InlineData(ControllerTypes.ViewNoteController, typeof(ViewNoteController))]
+        [InlineData(ControllerTypes.CreateNoteController, typeof(CreateNoteController))]
+        [InlineData(ControllerTypes.EditNoteController, typeof(EditNoteController))]
+        [InlineData(ControllerTypes.DeleteNoteController, typeof(DeleteNoteController))]
+        [InlineData(ControllerTypes.HelpController, typeof(HelpController))]
+        public void GetController_WhenId_ReturnController(ControllerTypes controllerType, Type type)
         {
             var repository = new MemoryRepository();
             var factory = new ControllerFactory(repository);
-            var result = factory.GetController(id);
+            var result = factory.GetController(controllerType);
             Assert.Equal(type, result.GetType());
         }
     }

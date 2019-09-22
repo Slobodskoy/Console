@@ -1,14 +1,13 @@
 ﻿using Notes.Controller;
+using Notes.Extention;
 using Notes.Infrastructure;
 using Notes.Model;
 using System;
 
 namespace Notes.View
 {
-    public class ViewNotePageView : PageView<Note>, IView<Note, IViewNoteController>
+    public class ViewNotePageView : PageView<Note, IViewNoteController>, IView<Note, IViewNoteController>
     {
-        public IViewNoteController Controller { get; set; }
-
         public ViewNotePageView() : base(new PageInfo(), null) { }
         public ViewNotePageView(PageInfo pageInfo, Note model, IViewNoteController controller) : base(pageInfo, model)
         {
@@ -35,13 +34,13 @@ namespace Notes.View
             }
             else
             {
-                Console.WriteLine($"Id\tTitle");
-                Console.WriteLine($"==\t=====");
-                Console.WriteLine($"{Model.Id}\t{Model.Title}");
+                Console.WriteLine($"Id\tTitle\tText");
+                Console.WriteLine($"==\t=====\t====");
+                Console.WriteLine($"{Model.Id}\t{Model.Title}\t{Model.Text}");
             }
-            Console.WriteLine("Input command: [0] - return to start, [5] - help");
+            Console.WriteLine(Controller.NextStepsHelpString);
             var command = Console.ReadLine();
-            Controller.RunCommand(command);
+            Controller.GoNextStep(command.GetControllerType());
         }
 
     }

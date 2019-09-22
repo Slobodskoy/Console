@@ -7,19 +7,31 @@ using System.Text;
 
 namespace Notes.Controller
 {
-    public class StartController : IController
+    public class StartController : BaseController, IController
     {
-        private readonly IControllerFactory controllerFactory;
         private readonly IView<CommandList, IController> pageView;
         private CommandList commandList = new CommandList();
+
+        public override IEnumerable<ControllerTypes> NextSteps
+        {
+            get => new ControllerTypes[] {
+                ControllerTypes.CreateNoteController,
+                ControllerTypes.DeleteNoteController,
+                ControllerTypes.EditNoteController,
+                ControllerTypes.HelpController,
+                ControllerTypes.ViewAllController,
+                ControllerTypes.ViewNoteController };
+        }
+
         public StartController(IControllerFactory controllerFactory, IView<CommandList, IController> pageView)
         {
-            commandList.Commands = new Dictionary<int, string> {
-                { 1, "View all records" },
-                { 2, "View record by Id" },
-                { 3, "Create new record" },
-                { 4, "Delete record by Id" },
-                { 5, "Help" },
+            commandList.Commands = new Dictionary<ControllerTypes, string> {
+                { ControllerTypes.ViewAllController, "View all records" },
+                { ControllerTypes.ViewNoteController, "View record by Id" },
+                { ControllerTypes.CreateNoteController, "Create new record" },
+                { ControllerTypes.EditNoteController, "Edit note" },
+                { ControllerTypes.DeleteNoteController, "Delete record by Id" },
+                { ControllerTypes.HelpController, "Help" },
             };
             this.controllerFactory = controllerFactory;
             this.pageView = pageView;
@@ -28,21 +40,10 @@ namespace Notes.Controller
             this.pageView.Controller = this;
         }
 
-        public void Run()
-        {  
+        public override void Run()
+        {
             pageView.Model = commandList;
             pageView.Render();
-        }
-
-        public void RunCommand(string command)
-        {
-            int commandId;
-            int.TryParse(command, out commandId);
-            if (commandList.Commands.ContainsKey(commandId))
-            {
-                var controller = controllerFactory.GetController(commandId);
-                controller.Run();
-            }
         }
     }
 }

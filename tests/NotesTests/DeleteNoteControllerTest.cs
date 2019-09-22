@@ -43,24 +43,24 @@ namespace NotesTests
         }
 
         [Theory]
-        [InlineData(0)]
-        [InlineData(5)]
-        public void RunCommand_WhenCommand_ThenFactoryRun(int command)
+        [InlineData(ControllerTypes.StartController)]
+        [InlineData(ControllerTypes.HelpController)]
+        public void RunCommand_WhenCommand_ThenFactoryRun(ControllerTypes command)
         {
             var controllerMock = new Mock<IController>();
             controllerMock.Setup(c => c.Run());
 
             var mock = new Mock<IControllerFactory>();
             
-            mock.Setup(a => a.GetController(It.Is<int>(i => i == command))).Returns(controllerMock.Object);
+            mock.Setup(a => a.GetController(It.Is<ControllerTypes>(i => i == command))).Returns(controllerMock.Object);
 
             var mockRep = new Mock<IRepository>();
             var view = new Mock<IView<Note, IDeleteNoteController>>();
             view.Setup(v => v.Info).Returns(new PageInfo());
             view.Setup(v => v.Model).Returns(new Note());
             var controller = new DeleteNoteController(mock.Object, mockRep.Object, view.Object);
-            controller.RunCommand($"{command}");
-            mock.Verify(m => m.GetController(It.Is<int>(i => i == command)), Times.Once());
+            controller.GoNextStep(command);
+            mock.Verify(m => m.GetController(It.Is<ControllerTypes>(i => i == command)), Times.Once());
         }
     }
 }

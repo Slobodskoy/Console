@@ -3,7 +3,7 @@ using Notes.Infrastructure;
 
 namespace Notes.View
 {
-    public class PageView<V> : MasterView
+    public class PageView<V, C> : MasterView
     {
         public PageView() { }
         public PageView(PageInfo info, V model) : base(info)
@@ -18,7 +18,9 @@ namespace Notes.View
         {
             base.Render();
             ConsoleExt.H(Info.PageName);
-            ConsoleExt.Br();
+            ConsoleExt.Hr();
         }
+
+        public C Controller { get; set; }
     }
 }

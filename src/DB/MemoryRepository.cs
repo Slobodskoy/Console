@@ -33,5 +33,15 @@ namespace Notes.DB
         {
             return notesDict.Values.ToList();
         }
+
+        public bool UpdateNode(Note note)
+        {
+            if (notesDict.ContainsKey(note.Id))
+            {
+                notesDict[note.Id] = note;
+                return true;
+            }
+            return false;
+        }
     }
 }

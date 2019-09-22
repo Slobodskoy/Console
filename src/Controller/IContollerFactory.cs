@@ -1,7 +1,9 @@
-﻿namespace Notes.Controller
+﻿using Notes.Model;
+
+namespace Notes.Controller
 {
     public interface IControllerFactory
     {
-        IController GetController(int controllerId);
+        IController GetController(ControllerTypes type);
     }
 }

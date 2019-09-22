@@ -9,11 +9,17 @@ using Notes.View;
 
 namespace Notes.Controller
 {
-    public class ViewNoteController : IViewNoteController
+    public class ViewNoteController : BaseController, IViewNoteController
     {
-        private readonly IControllerFactory controllerFactory;
         private readonly IRepository repository;
         private readonly IView<Note, IViewNoteController> pageView;
+
+        public override IEnumerable<ControllerTypes> NextSteps
+        {
+            get => new ControllerTypes[] {
+                ControllerTypes.StartController,
+                ControllerTypes.HelpController};
+        }
 
         public ViewNoteController(IControllerFactory controllerFactory, IRepository repository, IView<Note, IViewNoteController> pageView)
         {
@@ -25,7 +31,7 @@ namespace Notes.Controller
             this.pageView.Controller = this;
         }
 
-        public void Run()
+        public override void Run()
         {
             pageView.Model = null;
             pageView.Render();
@@ -35,17 +41,6 @@ namespace Notes.Controller
         {
             pageView.Model = repository.GetNoteById(id) ?? new Note { Id = 0 };
             pageView.Render();
-        }
-
-        public void RunCommand(string command)
-        {
-            int commandId;
-            int.TryParse(command, out commandId);
-            if ((new[] { 0, 5 }).Contains(commandId))
-            {
-                var controller = controllerFactory.GetController(commandId);
-                controller.Run();
-            }
         }
     }
 }

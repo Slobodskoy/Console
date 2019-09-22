@@ -25,9 +25,9 @@ namespace Notes.View
 
         private void RenderHead()
         {
-            ConsoleExt.Br();
+            ConsoleExt.Hr();
             ConsoleExt.H(_info.AppName);
-            ConsoleExt.Br();
+            ConsoleExt.Hr();
         }
     }
 }

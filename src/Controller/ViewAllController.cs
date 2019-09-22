@@ -9,11 +9,17 @@ using System.Text;
 
 namespace Notes.Controller
 {
-    public class ViewAllController : IController
+    public class ViewAllController : BaseController, IController
     {
         private readonly IRepository repository;
         private readonly IView<List<Note>, IController> pageView;
-        private readonly IControllerFactory controllerFactory;
+
+        public override IEnumerable<ControllerTypes> NextSteps
+        {
+            get => new ControllerTypes[] {
+                ControllerTypes.StartController,
+                ControllerTypes.HelpController};
+        }
 
         public ViewAllController(IControllerFactory controllerFactory, IRepository repository, IView<List<Note>, IController> pageView)
         {
@@ -24,21 +30,10 @@ namespace Notes.Controller
             this.pageView.Info.PageName = "View all notes";
             this.pageView.Controller = this;
         }
-        public void Run()
+        public override void Run()
         {
             pageView.Model = repository.GetNotes();
             pageView.Render();
-        }
-
-        public void RunCommand(string command)
-        {
-            int commandId;
-            int.TryParse(command, out commandId);
-            if ((new[] { 0, 5 }).Contains(commandId))
-            {
-                var controller = controllerFactory.GetController(commandId);
-                controller.Run();
-            }
         }
     }
 }

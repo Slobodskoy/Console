@@ -7,10 +7,14 @@ using System.Text;
 
 namespace Notes.Controller
 {
-    public class HelpController : IController
+    public class HelpController : BaseController, IController
     {
-        private readonly IControllerFactory controllerFactory;
         private readonly IView<Help, IController> pageView;
+
+        public override IEnumerable<ControllerTypes> NextSteps
+        {
+            get => new ControllerTypes[] { ControllerTypes.StartController };
+        }
 
         public HelpController(IControllerFactory controllerFactory, IView<Help, IController> pageView)
         {
@@ -21,22 +25,11 @@ namespace Notes.Controller
             this.pageView.Controller = this;
         }
 
-        public void Run()
+        public override void Run()
         {
             var help = new Help { HelpText = "This is help text"};
             pageView.Model = help;
             pageView.Render();
-        }
-
-        public void RunCommand(string command)
-        {
-            int commandId;
-            int.TryParse(command, out commandId);
-            if (commandId==0)
-            {
-                var controller = controllerFactory.GetController(commandId);
-                controller.Run();
-            }
         }
     }
 }

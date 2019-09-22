@@ -11,5 +11,7 @@ namespace Notes.DB
         Note GetNoteById(int id);
         int AddNote(Note note);
         bool DeleteNode(int id);
+
+        bool UpdateNode(Note note);
     }
 }

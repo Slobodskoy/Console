@@ -18,7 +18,7 @@ namespace Notes.Extention
             Console.WriteLine(AlignCenter(text.Trim().PadLeft(text.Length+1).PadRight(text.Length + 2), filler));
         }
 
-        public static void Br()
+        public static void Hr()
         {
             Console.WriteLine(AlignCenter(string.Empty, '='));
         }

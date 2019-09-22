@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using Notes.Controller;
+using Notes.Extention;
 using Notes.Infrastructure;
 using Notes.Model;
 
 namespace Notes.View
 {
-    public class DeleteNotePageView : PageView<Note>, IView<Note, IDeleteNoteController>
+    public class DeleteNotePageView : PageView<Note, IDeleteNoteController>, IView<Note, IDeleteNoteController>
     {
-        public IDeleteNoteController Controller { get; set; }
-
         public DeleteNotePageView() : base(new PageInfo(), null)  { }
         public DeleteNotePageView(PageInfo pageInfo, Note model, IDeleteNoteController controller) : base(pageInfo, model)
         {
@@ -39,9 +38,9 @@ namespace Notes.View
             {
                 Console.WriteLine($"Note deleted");
             }
-            Console.WriteLine("Input command: [0] - return to start, [5] - help");
+            Console.WriteLine(Controller.NextStepsHelpString);
             var command = Console.ReadLine();
-            Controller.RunCommand(command);
+            Controller.GoNextStep(command.GetControllerType());
         }
     }
 }
